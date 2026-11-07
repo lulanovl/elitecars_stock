@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
-import { cars } from "@/lib/content/cars";
+import { getCars } from "@/lib/cars-store";
 import { PageHero } from "@/components/PageHero";
 import { CarCard } from "@/components/CarCard";
 import { CtaSection } from "@/components/CtaSection";
@@ -13,7 +13,12 @@ export const metadata: Metadata = buildMetadata({
   keywords: ["новый Mercedes Бишкек цена", "новый BMW Бишкек", "Porsche Бишкек", "новые авто в наличии Кыргызстан"],
 });
 
-export default function CarsPage() {
+// Каталог меняется из админки (revalidatePath("/avtomobili")),
+// этот интервал — страховка на случай изменений в хранилище напрямую.
+export const revalidate = 3600;
+
+export default async function CarsPage() {
+  const cars = await getCars();
   const brands = Array.from(new Set(cars.map((c) => c.brand)));
   return (
     <>

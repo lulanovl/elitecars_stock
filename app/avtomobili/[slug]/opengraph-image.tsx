@@ -1,4 +1,5 @@
-import { formatRange, getCar } from "@/lib/content/cars";
+import { formatRange } from "@/lib/content/cars";
+import { getCar } from "@/lib/cars-store";
 import { ogContentType, ogSize, renderOgImage } from "@/lib/og";
 
 export const alt = "Новый автомобиль в Кыргызстане";
@@ -7,11 +8,11 @@ export const contentType = ogContentType;
 
 export default async function Image({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const c = getCar(slug);
+  const c = await getCar(slug);
   return renderOgImage({
     title: c ? `Новый ${c.brand} ${c.model}` : "Новые автомобили в Кыргызстане",
     subtitle: c ? `${c.segment} · в Бишкеке ${formatRange(c.price)}` : undefined,
     eyebrow: "Каталог · новые автомобили в Кыргызстане",
-    photo: c?.image,
+    photo: c?.images[0]?.url,
   });
 }

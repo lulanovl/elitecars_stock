@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { cars, formatRange, formatUsd, getCar } from "@/lib/content/cars";
+import { formatRange, formatUsd } from "@/lib/content/cars";
+import { getCar, getCars } from "@/lib/cars-store";
 import { buildMetadata, productJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/JsonLd";
 import { PageHero } from "@/components/PageHero";
@@ -10,13 +11,18 @@ import { CtaSection } from "@/components/CtaSection";
 import { Icon } from "@/components/ui/Icons";
 import { ButtonLink } from "@/components/ui/Button";
 
-export function generateStaticParams() {
+// Страницы меняются из админки (revalidatePath на конкретный slug),
+// этот интервал — страховка на случай изменений в хранилище напрямую.
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const cars = await getCars();
   return cars.map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps<"/avtomobili/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const car = getCar(slug);
+  const car = await getCar(slug);
   if (!car) return {};
   return buildMetadata({
     title: `Новый ${car.brand} ${car.model} в Бишкеке: цена и подбор`,
@@ -35,12 +41,14 @@ export async function generateMetadata({ params }: PageProps<"/avtomobili/[slug]
 
 export default async function CarPage({ params }: PageProps<"/avtomobili/[slug]">) {
   const { slug } = await params;
-  const car = getCar(slug);
+  const [car, cars] = await Promise.all([getCar(slug), getCars()]);
   if (!car) notFound();
 
   const related = cars.filter((c) => c.slug !== car.slug && c.segment === car.segment).slice(0, 3);
   const fallback = cars.filter((c) => c.slug !== car.slug && !related.includes(c)).slice(0, 3 - related.length);
   const others = [...related, ...fallback];
+
+  const [mainImage, ...galleryImages] = car.images;
 
   return (
     <>
@@ -52,7 +60,7 @@ export default async function CarPage({ params }: PageProps<"/avtomobili/[slug]"
           path: `/avtomobili/${car.slug}`,
           low: car.price[0],
           high: car.price[1],
-          image: car.image,
+          image: mainImage?.url,
         })}
       />
       <PageHero
@@ -73,19 +81,23 @@ export default async function CarPage({ params }: PageProps<"/avtomobili/[slug]"
       <section className="py-20 sm:py-24">
         <div className="container-x grid gap-12 lg:grid-cols-[1.3fr_1fr]">
           <div>
-            <h2 className="font-display text-3xl font-bold tracking-tight text-navy-900">
-              Почему {car.model} выбирают через нас
-            </h2>
-            <ul className="mt-6 space-y-4">
-              {car.whyPopular.map((w) => (
-                <li key={w} className="flex gap-4 rounded-2xl border border-line bg-white p-5 shadow-soft">
-                  <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-accent-500 text-navy-900">
-                    <Icon.Check className="size-4" />
-                  </span>
-                  <p className="text-[15.5px] leading-relaxed text-navy-900">{w}</p>
-                </li>
-              ))}
-            </ul>
+            {car.whyPopular.length > 0 && (
+              <>
+                <h2 className="font-display text-3xl font-bold tracking-tight text-navy-900">
+                  Почему {car.model} выбирают через нас
+                </h2>
+                <ul className="mt-6 space-y-4">
+                  {car.whyPopular.map((w) => (
+                    <li key={w} className="flex gap-4 rounded-2xl border border-line bg-white p-5 shadow-soft">
+                      <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-accent-500 text-navy-900">
+                        <Icon.Check className="size-4" />
+                      </span>
+                      <p className="text-[15.5px] leading-relaxed text-navy-900">{w}</p>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
 
             <h2 className="font-display mt-14 text-3xl font-bold tracking-tight text-navy-900">Версии и комплектации</h2>
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
@@ -118,11 +130,11 @@ export default async function CarPage({ params }: PageProps<"/avtomobili/[slug]"
           </div>
 
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            {car.image ? (
+            {mainImage ? (
               <figure>
                 <div className="relative aspect-[16/10] overflow-hidden rounded-3xl border border-line bg-surface shadow-soft">
                   <Image
-                    src={car.image}
+                    src={mainImage.url}
                     alt={`${car.brand} ${car.model}`}
                     fill
                     priority
@@ -130,13 +142,13 @@ export default async function CarPage({ params }: PageProps<"/avtomobili/[slug]"
                     className="object-cover"
                   />
                 </div>
-                {car.imageCredit && (
+                {mainImage.credit && (
                   <figcaption className="mt-2 text-right text-[11px] text-muted/70">
                     Фото:{" "}
-                    <a href={car.imageCredit.source} target="_blank" rel="noopener noreferrer nofollow" className="hover:underline">
-                      {car.imageCredit.author}
+                    <a href={mainImage.credit.source} target="_blank" rel="noopener noreferrer nofollow" className="hover:underline">
+                      {mainImage.credit.author}
                     </a>
-                    {car.imageCredit.license && ` · ${car.imageCredit.license}`}
+                    {mainImage.credit.license && ` · ${mainImage.credit.license}`}
                   </figcaption>
                 )}
               </figure>
@@ -150,6 +162,23 @@ export default async function CarPage({ params }: PageProps<"/avtomobili/[slug]"
                 </div>
               </div>
             )}
+
+            {galleryImages.length > 0 && (
+              <div className="mt-2 grid grid-cols-3 gap-2">
+                {galleryImages.map((img) => (
+                  <a
+                    key={img.url}
+                    href={img.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative aspect-[16/10] overflow-hidden rounded-xl border border-line bg-surface"
+                  >
+                    <Image src={img.url} alt={`${car.brand} ${car.model}`} fill sizes="150px" className="object-cover" />
+                  </a>
+                ))}
+              </div>
+            )}
+
             <div className="mt-4 rounded-3xl border border-line bg-white p-6 shadow-soft">
               <p className="text-sm text-muted">Новый в Бишкеке</p>
               <p className="font-display mt-1 text-2xl font-extrabold text-navy-900">{formatRange(car.price)}</p>
@@ -170,16 +199,18 @@ export default async function CarPage({ params }: PageProps<"/avtomobili/[slug]"
         </div>
       </section>
 
-      <section className="bg-surface py-20 sm:py-24">
-        <div className="container-x">
-          <h2 className="font-display text-3xl font-bold tracking-tight text-navy-900">Похожие модели</h2>
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {others.map((c) => (
-              <CarCard key={c.slug} car={c} />
-            ))}
+      {others.length > 0 && (
+        <section className="bg-surface py-20 sm:py-24">
+          <div className="container-x">
+            <h2 className="font-display text-3xl font-bold tracking-tight text-navy-900">Похожие модели</h2>
+            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {others.map((c) => (
+                <CarCard key={c.slug} car={c} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <CtaSection
         title={`Подобрать новый ${car.brand} ${car.model}`}

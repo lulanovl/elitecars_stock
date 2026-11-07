@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import { siteConfig, links, WA_DEFAULT } from "@/lib/site";
 import { steps } from "@/lib/content/steps";
 import { faq } from "@/lib/content/faq";
-import { getFeaturedCars } from "@/lib/featured";
+import { getFeaturedCars } from "@/lib/cars-store";
 import { faqJsonLd, howToJsonLd, serviceJsonLd } from "@/lib/seo";
 import { JsonLd } from "@/components/JsonLd";
 import { Icon } from "@/components/ui/Icons";
 import { ButtonAnchor, ButtonLink } from "@/components/ui/Button";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { StockPanel } from "@/components/StockPanel";
-import { FeaturedCarCard } from "@/components/CarCard";
+import { CarCard } from "@/components/CarCard";
 import { Faq } from "@/components/Faq";
 import { CtaSection } from "@/components/CtaSection";
 
@@ -204,7 +204,7 @@ export default async function HomePage() {
           </div>
           <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((c) => (
-              <FeaturedCarCard key={c.id} car={c} />
+              <CarCard key={c.slug} car={c} />
             ))}
           </div>
         </div>

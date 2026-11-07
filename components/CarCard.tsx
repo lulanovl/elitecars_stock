@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { formatUsd, type Car } from "@/lib/content/cars";
-import type { FeaturedCar } from "@/lib/featured";
+import { formatUsd } from "@/lib/content/cars";
+import type { StoredCar } from "@/lib/cars-store";
 import { Icon } from "@/components/ui/Icons";
 
 type CardData = {
@@ -15,8 +15,8 @@ type CardData = {
   accent?: string;
 };
 
-/** Карточка автомобиля из каталога (lib/content/cars.ts). */
-export function CarCard({ car }: { car: Car }) {
+/** Карточка автомобиля из каталога (редактируется в /admin, lib/cars-store.ts). */
+export function CarCard({ car }: { car: StoredCar }) {
   return (
     <CarCardView
       href={`/avtomobili/${car.slug}`}
@@ -25,23 +25,8 @@ export function CarCard({ car }: { car: Car }) {
       segment={car.segment}
       highlights={car.highlights}
       priceFrom={car.price[0]}
-      image={car.image}
+      image={car.images[0]?.url}
       accent={car.accent}
-    />
-  );
-}
-
-/** Карточка из блока «Что мы привозим чаще всего» (редактируется в админке). */
-export function FeaturedCarCard({ car }: { car: FeaturedCar }) {
-  return (
-    <CarCardView
-      href={car.href || "#zayavka"}
-      brand={car.brand}
-      model={car.model}
-      segment={car.segment}
-      highlights={car.highlights}
-      priceFrom={car.priceFrom}
-      image={car.image || undefined}
     />
   );
 }

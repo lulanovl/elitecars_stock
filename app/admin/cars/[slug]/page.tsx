@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/admin-auth";
-import { getFeaturedCars } from "@/lib/featured";
+import { getCars } from "@/lib/cars-store";
 import { logout } from "../../actions";
 import { AdminHeader } from "../../AdminHeader";
-import { FeaturedForm } from "../FeaturedForm";
+import { CarForm } from "../CarForm";
 
 export const metadata: Metadata = { title: "Редактирование" };
 
-export default async function EditFeaturedPage({ params }: PageProps<"/admin/featured/[id]">) {
+export default async function EditCarPage({ params }: PageProps<"/admin/cars/[slug]">) {
   await requireAdmin();
-  const { id } = await params;
-  const car = (await getFeaturedCars()).find((c) => c.id === decodeURIComponent(id));
+  const { slug } = await params;
+  const car = (await getCars()).find((c) => c.slug === decodeURIComponent(slug));
   if (!car) notFound();
   return (
     <>
       <AdminHeader logoutAction={logout} />
-      <FeaturedForm title={`${car.brand} ${car.model}`} car={car} />
+      <CarForm title={`${car.brand} ${car.model}`} car={car} />
     </>
   );
 }
