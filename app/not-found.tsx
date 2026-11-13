@@ -9,10 +9,10 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <section className="relative overflow-hidden bg-navy-900 py-32 text-white">
+    <section className="relative overflow-hidden bg-navy-900 py-20 text-white sm:py-32">
       <div className="grid-bg absolute inset-0 opacity-60" aria-hidden />
       <div className="container-x relative text-center">
-        <p className="font-display text-8xl font-extrabold text-accent-400">404</p>
+        <p className="font-display text-6xl font-extrabold text-accent-400 sm:text-8xl">404</p>
         <h1 className="font-display mt-4 text-3xl font-bold">Такой страницы нет</h1>
         <p className="mx-auto mt-3 max-w-md text-white/65">
           Возможно, ссылка устарела. Начните с главной или посмотрите популярные модели.

@@ -97,7 +97,7 @@ export function serviceJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: "Подбор и покупка новых автомобилей в Кыргызстане",
+    name: "Подбор автомобилей из Кыргызстана без посредников",
     serviceType: "Автоподбор",
     provider: { "@id": absoluteUrl("/#organization") },
     areaServed: siteConfig.areaServed.map((name) => ({ "@type": "Country", name })),
@@ -124,7 +124,7 @@ export function howToJsonLd(steps: { title: string; short: string }[]) {
     name: "Как купить новый автомобиль в Кыргызстане через подбор",
     description:
       "Шесть этапов: подбор, договор, проверка автомобиля, торг и покупка, оформление, передача ключей.",
-    totalTime: "P7D",
+    totalTime: "P10D",
     step: steps.map((s, i) => ({
       "@type": "HowToStep",
       position: i + 1,

@@ -164,16 +164,22 @@ export default async function CarPage({ params }: PageProps<"/avtomobili/[slug]"
             )}
 
             {galleryImages.length > 0 && (
-              <div className="mt-2 grid grid-cols-3 gap-2">
+              <div className="scrollbar-none mt-2 flex snap-x snap-mandatory gap-2 overflow-x-auto sm:grid sm:grid-cols-3 sm:overflow-visible">
                 {galleryImages.map((img) => (
                   <a
                     key={img.url}
                     href={img.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative aspect-[16/10] overflow-hidden rounded-xl border border-line bg-surface"
+                    className="relative aspect-[16/10] w-[78%] shrink-0 snap-start overflow-hidden rounded-xl border border-line bg-surface sm:w-auto"
                   >
-                    <Image src={img.url} alt={`${car.brand} ${car.model}`} fill sizes="150px" className="object-cover" />
+                    <Image
+                      src={img.url}
+                      alt={`${car.brand} ${car.model}`}
+                      fill
+                      sizes="(min-width: 640px) 150px, 78vw"
+                      className="object-cover"
+                    />
                   </a>
                 ))}
               </div>

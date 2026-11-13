@@ -47,7 +47,7 @@ const benefits = [
   {
     icon: Icon.Clock,
     title: "Быстро — машины в наличии",
-    text: "Автомобиль уже в Кыргызстане: от заявки до ключей — от 1 до 7 дней, без месяцев ожидания доставки.",
+    text: "Автомобиль уже в Кыргызстане: от заявки до ключей — от 7 до 10 дней, без месяцев ожидания доставки.",
   },
   {
     icon: Icon.Document,
@@ -96,9 +96,9 @@ export default async function HomePage() {
               Новые автомобили в наличии · Бишкек
             </span>
             <h1 className="font-display mt-6 text-balance text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl lg:text-[3.4rem]">
-              Подбор новых автомобилей{" "}
+              Подбор автомобилей из Кыргызстана{" "}
               <span className="bg-gradient-to-r from-accent-300 to-accent-500 bg-clip-text text-transparent">
-                в Кыргызстане
+                без посредников
               </span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/70 sm:text-xl">
@@ -127,7 +127,7 @@ export default async function HomePage() {
               {[
                 "Только новые автомобили, 0 км",
                 "Сравниваем цены по всему рынку",
-                "Ключи — от 1 до 7 дней",
+                "Ключи — от 7 до 10 дней",
                 "Личный менеджер и видеоотчёты",
               ].map((t) => (
                 <li key={t} className="flex items-center gap-2.5">

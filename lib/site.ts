@@ -6,12 +6,12 @@
 
 export const siteConfig = {
   name: "Elite Cars - Stock",
-  legalName: "Elite Cars - Stock — подбор новых автомобилей в Кыргызстане",
-  tagline: "Подбор и покупка новых автомобилей в наличии в Кыргызстане",
+  legalName: "Elite Cars - Stock — подбор автомобилей из Кыргызстана без посредников",
+  tagline: "Подбор автомобилей из Кыргызстана без посредников",
   /** Short English tagline printed under the wordmark */
   logoTagline: "Stock · New cars in Kyrgyzstan",
   description:
-    "Найдём новый автомобиль в наличии в Кыргызстане: сравним предложения дилеров и импортёров, проверим машину перед покупкой, договоримся о цене и оформим документы. Передача в Бишкеке или доставка по ЕАЭС.",
+    "Подберём автомобиль из Кыргызстана без посредников: сравним предложения дилеров и импортёров, проверим машину перед покупкой, договоримся о цене и оформим документы. Передача в Бишкеке или доставка по ЕАЭС.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://elitecars-stock.vercel.app",
   locale: "ru_RU",
   language: "ru",
@@ -42,7 +42,7 @@ export const siteConfig = {
   // Key numbers shown on the landing page. Update as the business grows.
   stats: [
     { value: "0 км", label: "только новые автомобили" },
-    { value: "1–7 дней", label: "от заявки до ключей" },
+    { value: "7–10 дней", label: "от заявки до ключей" },
     { value: "Фикс.", label: "комиссия в договоре" },
     { value: "100%", label: "проверка перед покупкой" },
   ],

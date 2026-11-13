@@ -50,7 +50,10 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 4.5rem;
+  @media (width >= 64rem) {
+    scroll-padding-top: 5rem;
+  }
 }
 
 body {
@@ -66,6 +69,13 @@ body {
 }
 
 /* Utility layers */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @utility container-x {
   margin-inline: auto;
   width: 100%;

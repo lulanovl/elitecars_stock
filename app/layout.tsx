@@ -27,7 +27,7 @@ const manrope = Manrope({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: `Подбор новых автомобилей в Кыргызстане — ${siteConfig.name}`,
+    default: `${siteConfig.tagline} — ${siteConfig.name}`,
     template: `%s — ${siteConfig.name}`,
   },
   description: siteConfig.description,
@@ -55,12 +55,12 @@ export const metadata: Metadata = {
     locale: siteConfig.locale,
     url: siteConfig.url,
     siteName: siteConfig.name,
-    title: `Подбор новых автомобилей в Кыргызстане — ${siteConfig.name}`,
+    title: `${siteConfig.tagline} — ${siteConfig.name}`,
     description: siteConfig.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `Подбор новых автомобилей в Кыргызстане — ${siteConfig.name}`,
+    title: `${siteConfig.tagline} — ${siteConfig.name}`,
     description: siteConfig.description,
   },
   robots: {

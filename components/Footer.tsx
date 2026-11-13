@@ -12,10 +12,10 @@ export async function Footer() {
       <div className="container-x grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
         <div>
           <Link href="/" className="inline-flex items-center">
-            <Logo className="h-20 w-auto" />
+            <Logo className="h-14 w-auto sm:h-20" />
           </Link>
           <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-white/60">
-            Подбор и покупка новых автомобилей в наличии в Кыргызстане: поиск по всему рынку, проверка перед
+            Подбор автомобилей из Кыргызстана без посредников: поиск по всему рынку, проверка перед
             покупкой, торг и оформление. Передача в Бишкеке или доставка по ЕАЭС.
           </p>
           <div className="mt-6 flex gap-3">

@@ -101,7 +101,7 @@ export default async function AdminPage({ searchParams }: PageProps<"/admin">) {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 self-end sm:self-auto">
+                <div className="flex flex-wrap items-center gap-2 self-end sm:self-auto">
                   <form action={moveCar}>
                     <input type="hidden" name="slug" value={c.slug} />
                     <input type="hidden" name="dir" value="up" />

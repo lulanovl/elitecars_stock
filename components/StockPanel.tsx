@@ -57,14 +57,14 @@ export function StockPanel() {
           ))}
         </ul>
 
-        <div className="mt-6 grid grid-cols-3 gap-2 text-center text-[11px] text-white/60 sm:text-xs">
+        <div className="mt-6 grid grid-cols-1 gap-2 text-left text-xs text-white/60 sm:grid-cols-3 sm:text-center sm:text-[11px]">
           {[
             { icon: Icon.Shield, t: "Проверка ЛКП" },
             { icon: Icon.Document, t: "Сверка по VIN" },
             { icon: Icon.Wallet, t: "Торг за вас" },
           ].map(({ icon: I, t }) => (
-            <div key={t} className="rounded-xl border border-white/10 px-2 py-3">
-              <I className="mx-auto mb-1.5 size-4 text-accent-400" />
+            <div key={t} className="flex items-center gap-2 rounded-xl border border-white/10 px-3 py-2.5 sm:block sm:px-2 sm:py-3 sm:text-center">
+              <I className="size-4 shrink-0 text-accent-400 sm:mx-auto sm:mb-1.5" />
               {t}
             </div>
           ))}
@@ -78,7 +78,7 @@ export function StockPanel() {
           </span>
           <div>
             <p className="text-[11px] text-muted">До ключей</p>
-            <p className="text-sm font-semibold">от 1 дня</p>
+            <p className="text-sm font-semibold">от 7 дней</p>
           </div>
         </div>
       </div>

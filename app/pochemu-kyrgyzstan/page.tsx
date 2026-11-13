@@ -53,6 +53,14 @@ const reasons = [
   },
 ];
 
+const comparison: [string, string, string][] = [
+  ["Срок", "От 7 до 10 дней до ключей", "От одного до нескольких месяцев"],
+  ["Осмотр", "Вживую до оплаты", "По фото и видео продавца"],
+  ["Риски в пути", "Нет — машина уже на месте", "Повреждения и задержки при перевозке"],
+  ["Цена", "Известна и фиксируется при покупке", "Зависит от курса и логистики"],
+  ["Предоплата", "Оплата после проверки автомобиля", "Обычно до отправки"],
+];
+
 export default function WhyKyrgyzstanPage() {
   return (
     <>
@@ -134,7 +142,22 @@ export default function WhyKyrgyzstanPage() {
             title="Автомобиль в наличии или заказ из-за рубежа?"
             description="Оба варианта рабочие. Автомобиль в наличии даёт скорость и предсказуемость."
           />
-          <div className="mt-12 overflow-x-auto rounded-3xl border border-line shadow-soft">
+          {/* Mobile: stacked cards */}
+          <div className="mt-12 space-y-4 md:hidden">
+            {comparison.map(([c, a, b]) => (
+              <div key={c} className="rounded-3xl border border-line bg-white p-5 shadow-soft">
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">{c}</p>
+                <p className="mt-3 flex items-start gap-2 text-[15px] font-semibold text-navy-900">
+                  <Icon.Check className="mt-1 size-4 shrink-0 text-emerald-600" />
+                  {a}
+                </p>
+                <p className="mt-2 pl-6 text-[15px] text-muted">{b}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: table */}
+          <div className="mt-12 hidden overflow-x-auto rounded-3xl border border-line shadow-soft md:block">
             <table className="w-full min-w-[640px] text-left text-[15px]">
               <thead className="bg-navy-900 text-white">
                 <tr>
@@ -144,13 +167,7 @@ export default function WhyKyrgyzstanPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-line bg-white">
-                {[
-                  ["Срок", "От 1 до 7 дней до ключей", "От одного до нескольких месяцев"],
-                  ["Осмотр", "Вживую до оплаты", "По фото и видео продавца"],
-                  ["Риски в пути", "Нет — машина уже на месте", "Повреждения и задержки при перевозке"],
-                  ["Цена", "Известна и фиксируется при покупке", "Зависит от курса и логистики"],
-                  ["Предоплата", "Оплата после проверки автомобиля", "Обычно до отправки"],
-                ].map(([c, a, b]) => (
+                {comparison.map(([c, a, b]) => (
                   <tr key={c}>
                     <td className="px-6 py-4 font-semibold text-navy-900">{c}</td>
                     <td className="px-6 py-4 text-navy-900">
